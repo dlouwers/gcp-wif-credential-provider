@@ -1,0 +1,36 @@
+# With ServiceAccountNodeAudienceRestriction (beta, on by default since
+# Kubernetes 1.33) a node may only request ServiceAccount tokens for an
+# audience it is explicitly allowed. Without this the kubelet never invokes
+# the plugin and the pull fails with an audience error in the kubelet log.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: gcp-wif-credential-provider-audience
+rules:
+  - verbs: ["request-serviceaccounts-token-audience"]
+    apiGroups: [""]
+    resources: ["//iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL/providers/PROVIDER"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: gcp-wif-credential-provider-audience
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: gcp-wif-credential-provider-audience
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: system:nodes
+---
+# An opted-in ServiceAccount. Grant roles/artifactregistry.reader to
+#   principal://iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL/subject/system:serviceaccount:NAMESPACE:NAME
+# on the repository.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app
+  namespace: app
+  annotations:
+    gcp-wif-credential-provider.dlouwers.github.io/workload-identity-provider: projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL/providers/PROVIDER
