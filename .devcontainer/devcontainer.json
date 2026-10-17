@@ -1,0 +1,16 @@
+{
+  "name": "gcp-wif-credential-provider (Go)",
+  // Same base as dlouwers/investor-buddy, pinned to the Go minor that go.mod
+  // and CI (setup-go with go-version-file) use, so a local `go test` and the
+  // release build run the same toolchain.
+  "image": "mcr.microsoft.com/devcontainers/go:1.26-bookworm",
+  "remoteUser": "root",
+  "containerUser": "root",
+  "updateRemoteUserUID": false,
+  // Deliberately no mounts and no credentials. The plugin has no
+  // dependencies to fetch and talks to Google only when the kubelet runs it,
+  // so nothing here needs a kubeconfig, a gh token or a GCP login.
+  "containerEnv": {
+    "CGO_ENABLED": "1"
+  }
+}

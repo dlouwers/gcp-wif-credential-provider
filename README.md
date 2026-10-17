@@ -95,6 +95,16 @@ that does not point at the missing API.
   `cacheType: Token`.
 - Errors carry Google's error body and never the token.
 
+## Development
+
+Everything runs in the devcontainer (`.devcontainer/devcontainer.json`). It
+uses the same Go minor as `go.mod` and CI, and has no mounts or credentials:
+
+```sh
+devcontainer up --workspace-folder .
+devcontainer exec --workspace-folder . go test -race ./...
+```
+
 ## Licence
 
 Apache-2.0.
