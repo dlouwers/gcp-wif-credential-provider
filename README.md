@@ -1,5 +1,13 @@
 # gcp-wif-credential-provider
 
+[![release workflow](https://github.com/dlouwers/gcp-wif-credential-provider/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/dlouwers/gcp-wif-credential-provider/actions/workflows/release.yml)
+[![latest release](https://img.shields.io/github/v/release/dlouwers/gcp-wif-credential-provider)](https://github.com/dlouwers/gcp-wif-credential-provider/releases/latest)
+[![provenance: attested](https://img.shields.io/badge/provenance-attested-2ea44f?logo=github)](https://github.com/dlouwers/gcp-wif-credential-provider/attestations)
+[![Go version](https://img.shields.io/github/go-mod/go-version/dlouwers/gcp-wif-credential-provider)](go.mod)
+[![dependencies: none](https://img.shields.io/badge/dependencies-none-2ea44f)](go.mod)
+[![Kubernetes 1.34+](https://img.shields.io/badge/kubernetes-1.34%2B-326CE5?logo=kubernetes&logoColor=white)](#requirements)
+[![license: Apache 2.0](https://img.shields.io/github/license/dlouwers/gcp-wif-credential-provider)](LICENSE)
+
 A kubelet image credential provider that pulls from **Google Artifact Registry**
 using **Workload Identity Federation**, on Kubernetes clusters that are **not GKE**.
 No service account keys, no `imagePullSecrets`, no Secret to rotate.
