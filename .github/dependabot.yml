@@ -1,0 +1,41 @@
+# Every `uses:` in .github/workflows/ is pinned to a full commit SHA rather
+# than a tag, because a tag is a mutable pointer its owner can move. That
+# matters more than usual here: the release job holds id-token and
+# contents: write, and the binary it builds runs as root under the kubelet.
+#
+# Dependabot's github-actions ecosystem understands SHA pins and rewrites the
+# SHA and the trailing version comment together; without this file a SHA pin
+# never moves again. `directory: "/"` is correct: the ecosystem is anchored at
+# the repository root and finds .github/workflows itself.
+#
+# gomod is enrolled although go.mod has no requirements yet, so the first
+# dependency is covered the day it is added rather than when someone notices.
+#
+# Not covered, and bumped by hand:
+#   * the `go` directive in go.mod — Dependabot does not raise it. CI follows
+#     it via setup-go's go-version-file.
+#   * the devcontainer image (go:1.26-bookworm). The devcontainers ecosystem
+#     updates features only, and there are none; the image tag tracks the
+#     go.mod minor and moves together with it.
+version: 2
+
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: "ci(actions)"
+
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      go:
+        patterns: ["*"]
+    commit-message:
+      prefix: "build(deps)"
